@@ -344,3 +344,16 @@ h1, h2, h3, p { margin-bottom: 0; }
 .guestbook-link span {
   margin-left: 8px;
 }
+
+#wishesPage { display: none; }
+body.is-wishes-view #wishesPage {
+  display: block;
+  min-height: 100vh;
+}
+
+body.is-wishes-view #mainNav,
+body.is-wishes-view #hero,
+body.is-wishes-view main,
+body.is-wishes-view .site-footer {
+  display: none !important;
+}
