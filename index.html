@@ -247,7 +247,7 @@
           <button class="btn btn-wm w-100" type="submit">Kirim Ucapan ✧</button>
         </form>
         <div class="text-center mt-4">
-          <a href="ucapan.html" class="guestbook-link">
+          <a href="ucapan.html" id="openWishes" class="guestbook-link">
             Lihat Semua Ucapan <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -261,6 +261,19 @@
     <div class="ornament" aria-hidden="true"><span></span>❦<span></span></div>
     <small>18 JANUARI 2027 · BANYUWANGI</small>
   </footer>
+
+  <section id="wishesPage" class="section" aria-labelledby="wishesPageTitle">
+    <div class="container container-narrow">
+      <div class="text-center mb-5">
+        <p class="eyebrow">Kenangan dan Doa</p>
+        <h1 id="wishesPageTitle" class="title">Ucapan Para Tamu</h1>
+        <div class="ornament" aria-hidden="true"><span></span>❦<span></span></div>
+        <p>Terima kasih atas doa dan ucapan hangat yang diberikan.</p>
+        <a href="index.html#rsvp" id="backToInvite" class="guestbook-link mt-4">← Kembali ke Undangan</a>
+      </div>
+      <div id="wishes" class="wishes-list" aria-live="polite"></div>
+    </div>
+  </section>
 
   <div class="modal fade" id="lightbox" tabindex="-1" aria-label="Pratinjau foto" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
