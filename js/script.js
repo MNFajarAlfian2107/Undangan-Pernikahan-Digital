@@ -1,7 +1,12 @@
 "use strict";
 
 const WEDDING_DATE = new Date("2027-01-18T08:00:00+07:00");
-const STORAGE_KEY = "wishes-wahyu-mita";
+const SUPABASE_URL = "https://gnmvcjbbbtgzaggyemhu.supabase.co";
+const SUPABASE_KEY = "sb_publishable_ZTuRep_krDyNacCQJ8KO2Q_DUV2vgKB";
+const db = window.supabase
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
+
 const $ = (id) => document.getElementById(id);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
@@ -126,42 +131,72 @@ const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
 }[char]));
 
-function loadWishes() {
-  try {
-    const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    return Array.isArray(value) ? value : [];
-  } catch {
-    return [];
-  }
+function showToast(message) {
+  const toastEl = $("toast");
+  if (!toastEl || !$("toastMsg") || !window.bootstrap) return;
+  $("toastMsg").textContent = message;
+  bootstrap.Toast.getOrCreateInstance(toastEl).show();
 }
 
-function renderWishes() {
+async function renderWishes() {
   const wishesEl = $("wishes");
   if (!wishesEl) return;
-  const wishes = loadWishes();
-  wishesEl.innerHTML = wishes.length
-    ? wishes.map((wish) => `<article class="wish"><div class="wish-head"><b>${escapeHTML(wish.nama)}</b><span class="wish-badge">${escapeHTML(wish.hadir)}</span></div><p>${escapeHTML(wish.pesan)}</p></article>`).join("")
+
+  if (!db) {
+    wishesEl.innerHTML = '<p class="wishes-empty">Ucapan belum bisa dimuat.</p>';
+    return;
+  }
+
+  const { data, error } = await db
+    .from("wishes")
+    .select("name, attendance, message, created_at")
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (error) {
+    console.error("Gagal memuat ucapan:", error);
+    wishesEl.innerHTML = '<p class="wishes-empty">Ucapan belum bisa dimuat. Coba muat ulang halaman.</p>';
+    return;
+  }
+
+  wishesEl.innerHTML = data.length
+    ? data.map((wish) => `<article class="wish"><div class="wish-head"><b>${escapeHTML(wish.name)}</b><span class="wish-badge">${escapeHTML(wish.attendance)}</span></div><p>${escapeHTML(wish.message)}</p></article>`).join("")
     : '<p class="wishes-empty">Belum ada ucapan. Jadilah yang pertama.</p>';
 }
 
 if ($("rsvpForm")) {
-  $("rsvpForm").addEventListener("submit", (event) => {
+  $("rsvpForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     form.classList.add("was-validated");
     if (!form.checkValidity()) return;
-    const wishes = loadWishes();
-    wishes.unshift({
-      nama: $("nama").value.trim(),
-      hadir: $("hadir").value,
-      pesan: $("pesan").value.trim()
-    });
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes.slice(0, 50)));
-    } catch {}
+
+    if (!db) {
+      showToast("Ucapan belum bisa dikirim. Coba muat ulang halaman.");
+      return;
+    }
+
+    const submitBtn = form.querySelector("button[type='submit']");
+    const payload = {
+      name: $("nama").value.trim(),
+      attendance: $("hadir").value,
+      message: $("pesan").value.trim()
+    };
+
+    if (submitBtn) submitBtn.disabled = true;
+    const { error } = await db.from("wishes").insert(payload);
+    if (submitBtn) submitBtn.disabled = false;
+
+    if (error) {
+      console.error("Gagal mengirim ucapan:", error);
+      showToast("Ucapan gagal terkirim. Coba lagi.");
+      return;
+    }
+
     form.reset();
     form.classList.remove("was-validated");
     if ($("charNow")) $("charNow").textContent = "0";
+    showToast("Terima kasih, ucapanmu sudah terkirim!");
     renderWishes();
   });
 }
