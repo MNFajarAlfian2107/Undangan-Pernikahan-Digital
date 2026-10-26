@@ -20,11 +20,10 @@ Website undangan pernikahan digital untuk **Wahyu & Mita**, dibuat sebagai Tugas
 
 ## Teknologi
 
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
+- HTML
+- CSS
+- JavaScript
 - [Bootstrap 5.3.3](https://getbootstrap.com/)
-- localStorage untuk menyimpan ucapan di browser
 
 ## Struktur Folder
 
