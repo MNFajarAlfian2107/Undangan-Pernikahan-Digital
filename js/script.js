@@ -201,3 +201,37 @@ if ($("rsvpForm")) {
   });
 }
 renderWishes();
+
+let inWishesView = false;
+function syncView() {
+  const wantWishes = location.hash === "#ucapan";
+  if (wantWishes === inWishesView) return;
+  inWishesView = wantWishes;
+  document.body.classList.toggle("is-wishes-view", wantWishes);
+
+  if (wantWishes) {
+    window.scrollTo(0, 0);
+    renderWishes();
+    return;
+  }
+
+  let target = null;
+  try {
+    target = location.hash.length > 1 ? document.querySelector(location.hash) : null;
+  } catch {}
+  if (target) target.scrollIntoView();
+  else window.scrollTo(0, 0);
+}
+
+$("openWishes")?.addEventListener("click", (event) => {
+  event.preventDefault();
+  location.hash = "#ucapan";
+});
+
+$("backToInvite")?.addEventListener("click", (event) => {
+  event.preventDefault();
+  location.hash = "#rsvp";
+});
+
+window.addEventListener("hashchange", syncView);
+syncView();
