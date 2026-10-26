@@ -32,13 +32,13 @@ Website undangan pernikahan digital untuk **Wahyu & Mita**, dibuat sebagai Tugas
 
 ```
 .
-├── assets/          # gambar dan musik
+├── assets/         
 ├── css/
-│   └── style.css    # gaya kustom
+│   └── style.css   
 ├── js/
-│   └── script.js    # logika halaman dan koneksi Supabase
-├── index.html       # halaman utama undangan
-├── ucapan.html      # halaman buku ucapan
+│   └── script.js   
+├── index.html     
+├── ucapan.html    
 └── README.md
 ```
 
