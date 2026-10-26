@@ -2,7 +2,7 @@
 
 Website undangan pernikahan digital untuk **Wahyu & Mita**, dibuat sebagai Tugas Mandiri mata kuliah Pemrograman Berbasis Platform (PBP).
 
-**Demo:** https://undangan-pernikahan-digitalfajaralf.vercel.app/
+**Link Vercel:** https://undangan-pernikahan-digitalfajaralf.vercel.app/
 
 ## Fitur
 
@@ -96,5 +96,5 @@ Proyek ini di-deploy dengan **Vercel** yang terhubung ke repository GitHub. Seti
 ## Pembuat
 
 **Moh Nur Fajar Alfian**
-NIM: *(isi NIM kamu)*
-Kelas: *(isi kelas kamu)*
+NIM: *(25051204180)*
+Kelas: *(TI 2025E)*
